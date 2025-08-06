@@ -61,9 +61,7 @@ const OrdersPage = () => {
               backgroundColor: "#f9f9f9",
             }}
           >
-            <Typography variant="h6" gutterBottom>
-              رقم الطلب: {order.id}
-            </Typography>
+           
 
             <Divider sx={{ my: 2 }} />
 
@@ -80,7 +78,7 @@ const OrdersPage = () => {
                   {item.name || "منتج بدون اسم"}
                 </Typography>
                 <Typography>
-                  الكمية: {item.quantity || 0} × ${item.price || 0}
+                  الكمية: {item.quantity || 0} <span>-----</span> ${item.price || 0}
                 </Typography>
                 <Typography sx={{ fontWeight: "bold", color: "green" }}>
                   الإجمالي: ${(item.price * item.quantity).toFixed(2)}$
