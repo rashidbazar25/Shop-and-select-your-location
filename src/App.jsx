@@ -8,6 +8,9 @@ import { Route ,Routes } from 'react-router-dom'
 import Home from './componts/Home'
 import Cart from './componts/Cart'
 import OrdersPage from './componts/OrdersPage'
+import Register from './componts/Register '
+import Login from './componts/Login'
+import ProtectedAdminRoute from './componts/ProtectedAdminRoute'
 
 function App() {
 
@@ -19,9 +22,19 @@ function App() {
       
       <Route path='/' element = {<Home/>} />
       <Route path='/products' element = {<Products/>} />
-      <Route path='/dashbord' element = {<Dashbord/>} />
       <Route path='/cart' element = {<Cart/>} />
       <Route path='/orderPage' element = {<OrdersPage/>} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/login" element={<Login />} />
+
+      <Route
+  path="/dashboard"
+  element={
+    <ProtectedAdminRoute>
+      <Dashbord />
+    </ProtectedAdminRoute>
+  }
+/>
       
 
     </Routes>
