@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../store/productsSlice";
 import { addToCart } from "../store/cartSlice";
@@ -19,38 +19,43 @@ import {
 const Producta = () => {
   const dispatch = useDispatch();
   const { items: products, loading } = useSelector((state) => state.products);
+  const [localLoading, setLocalLoading] = useState(true); // حالة لانتظار 4 ثواني
 
   useEffect(() => {
     dispatch(fetchProducts());
+
+    const timer = setTimeout(() => {
+      setLocalLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timer); // تنظيف المؤقت
   }, [dispatch]);
 
   const handleAddToCart = (product) => {
     dispatch(addToCart(product));
   };
 
-  if (loading) {
+  if (loading || localLoading) {
     return (
-      <Box mt={15} display="flex" justifyContent="center">
-        <CircularProgress />
+      <Box mt={30} display="flex" justifyContent="center">
+        <CircularProgress size={60} color="secondary" />
       </Box>
     );
   }
 
   return (
-    <Box p={4} mt={10} >
+    <Box p={4} mt={10}>
       <Typography variant="h4" gutterBottom textAlign="center">
         Explore Our Products
       </Typography>
 
-      <Grid container spacing={3}
-      sx={{display:"flex", justifyContent:"center" , alignItems:"center" , flexWrap:"wrap"}}
-      >
+      <Grid container spacing={3} justifyContent="center">
         {products.map((product) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
             <Card
               sx={{
                 height: "100%",
-                width:"300px",
+                width: "250px",
                 display: "flex",
                 flexDirection: "column",
                 borderRadius: 3,
@@ -69,7 +74,14 @@ const Producta = () => {
                 }}
               />
 
-              <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column", p: 2 }}>
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  display: "flex",
+                  flexDirection: "column",
+                  p: 2,
+                }}
+              >
                 <Typography variant="h6" gutterBottom>
                   {product.name}
                 </Typography>

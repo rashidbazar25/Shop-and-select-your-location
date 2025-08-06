@@ -83,7 +83,16 @@ const Dashboard = () => {
       </Box>
 
       {loading ? (
-        <CircularProgress />
+      <div
+  style={{
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: "100px", // ✅ يمكنك تعديل القيمة حسب الحاجة
+  }}
+>
+  <CircularProgress size={60} color="secondary" />
+</div>
       ) : (
         <Table>
           <TableHead>
