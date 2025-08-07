@@ -10,9 +10,11 @@ import {
   ListItem,
   ListItemText,
   Divider,
+  Badge,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useSelector } from 'react-redux';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { getAuth, signOut } from 'firebase/auth';
@@ -51,37 +53,33 @@ const Navbar = () => {
       <Button color="inherit" component={RouterLink} to="/products">Products</Button>
       <Button color="inherit" component={RouterLink} to="/orderPage">OrderPage</Button>
       <Button color="inherit" component={RouterLink} to="/dashboard">Dashboard</Button>
-      <Button color="inherit" component={RouterLink} to="/cart">
-        Cart <span style={{ color: "#28364a", marginLeft: 4 }}>({cart.length})</span>
-      </Button>
     </>
   );
 
   const authLinks = !isAuthChecked ? null : user ? (
-  <>
-    <Typography variant="body1" sx={{ color: '#333', fontWeight: 'bold' }}>
-      {user.email}
-    </Typography>
-    <Button color="inherit" onClick={handleLogout}>Logout</Button>
-  </>
-) : (
-  <>
-    <Button color="inherit" component={RouterLink} to="/register">Register</Button>
-    <Button color="inherit" component={RouterLink} to="/login">Login</Button>
-  </>
-);
+    <>
+      <Typography variant="body1" sx={{ color: '#333', fontWeight: 'bold' }}>
+        {user.email}
+      </Typography>
+      <Button color="inherit" onClick={handleLogout}>Logout</Button>
+    </>
+  ) : (
+    <>
+      <Button color="inherit" component={RouterLink} to="/register">Register</Button>
+      <Button color="inherit" component={RouterLink} to="/login">Login</Button>
+    </>
+  );
 
   return (
     <>
-      <AppBar 
-        color="#f9f6f2" 
+      <AppBar
+        color="#f9f6f2"
         sx={{
           width: "100%",
           boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
           backgroundColor: "#f9f6f2",
-          position:"fixed"
+          position: "fixed"
         }}
-       
       >
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Typography variant="h6" component="div">
@@ -89,12 +87,24 @@ const Navbar = () => {
           </Typography>
 
           {isMobile ? (
-            <IconButton edge="end" color="inherit" onClick={() => setDrawerOpen(true)}>
-              <MenuIcon />
-            </IconButton>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <IconButton color="inherit" component={RouterLink} to="/cart">
+                <Badge badgeContent={cart.length} color="error">
+                  <ShoppingCartIcon />
+                </Badge>
+              </IconButton>
+              <IconButton edge="end" color="inherit" onClick={() => setDrawerOpen(true)}>
+                <MenuIcon />
+              </IconButton>
+            </Box>
           ) : (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               {navLinks}
+              <Button color="inherit" component={RouterLink} to="/cart">
+                <Badge badgeContent={cart.length} color="error">
+                  <ShoppingCartIcon />
+                </Badge>
+              </Button>
               {authLinks}
             </Box>
           )}
@@ -124,9 +134,18 @@ const Navbar = () => {
               <ListItemText primary="Dashboard" />
             </ListItem>
             <ListItem button component={RouterLink} to="/cart" onClick={() => setDrawerOpen(false)}>
-              <ListItemText primary={`Cart (${cart.length})`} />
+              <ListItemText
+                primary={
+                  <>
+                    <ShoppingCartIcon sx={{ mr: 1 }} />
+                    Cart <span style={{ color: "#28364a" }}>({cart.length})</span>
+                  </>
+                }
+              />
             </ListItem>
+
             <Divider sx={{ my: 1 }} />
+
             {isAuthChecked && (
               user ? (
                 <>
