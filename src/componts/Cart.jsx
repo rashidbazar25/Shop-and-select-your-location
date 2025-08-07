@@ -25,7 +25,12 @@ import {
 import { db } from "../firebase";
 import { addDoc, collection } from "firebase/firestore";
 
+
+
+
+
 const CartCard = () => {
+
   const cartItems = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
 
@@ -56,11 +61,11 @@ const CartCard = () => {
 
         try {
           await addDoc(collection(db, "orders"), order);
-          dispatch(clearCart()); // ✅ تفريغ السلة بعد الإرسال
-          alert("✅ تم إرسال الطلب بنجاح!");
+          dispatch(clearCart()); //  تفريغ السلة بعد الإرسال
+          alert(" تم إرسال الطلب بنجاح!");
         } catch (error) {
           console.error("فشل في إرسال الطلب:", error);
-          alert("❌ حدث خطأ أثناء إرسال الطلب");
+          alert(" حدث خطأ أثناء إرسال الطلب");
         }
       },
       (error) => {
@@ -68,6 +73,9 @@ const CartCard = () => {
       }
     );
   };
+
+
+  
 
   return (
     <Box p={{ xs: 2, md: 4 }} mt={10}>
@@ -171,7 +179,7 @@ const CartCard = () => {
                 textTransform: "none",
               }}
             >
-              إرسال الطلب 🚀
+              إرسال الطلب 
             </Button>
           </Box>
         </>

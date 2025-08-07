@@ -17,15 +17,17 @@ import {
   MenuItem,
   TextField,
   useTheme,
+  CircularProgress, 
 } from "@mui/material";
 import { addToCart } from "../store/cartSlice";
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { items: products } = useSelector((state) => state.products);
+  const { items: products, loading } = useSelector((state) => state.products);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
-  const theme = useTheme(); // لاستخدام ألوان الثيم
+  const [categoryLoading, setCategoryLoading] = useState(false);   //  لودينق للتصنيف
+  const theme = useTheme();
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -37,13 +39,10 @@ const Home = () => {
     dispatch(addToCart(product));
   };
 
-  // دالة لتظليل الجزء المطابق من الاسم
   const highlightMatch = (text, query) => {
     if (!query) return text;
-
     const regex = new RegExp(`(${query})`, "gi");
     const parts = text.split(regex);
-
     return parts.map((part, i) =>
       part.toLowerCase() === query.toLowerCase() ? (
         <span
@@ -61,17 +60,28 @@ const Home = () => {
     );
   };
 
-  // فلترة المنتجات حسب التصنيف والبحث
   const filteredProducts = products.filter((product) => {
     const matchesCategory =
       selectedCategory === "All" || product.category === selectedCategory;
-
     const matchesSearch = product.name
       .toLowerCase()
       .includes(searchQuery.toLowerCase());
-
     return matchesCategory && matchesSearch;
   });
+
+  if (loading) {
+    return (
+      <Box
+        mt={15}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="50vh"
+      >
+        <CircularProgress color="secondary" size={60} thickness={5} />
+      </Box>
+    );
+  }
 
   return (
     <Box mt={10} p={3}>
@@ -79,17 +89,21 @@ const Home = () => {
         Welcome to Store
       </Typography>
 
-      {/* قائمة التصنيفات + البحث */}
       <Grid container spacing={2} mb={4}>
         <Grid item xs={12} sm={6}>
           <FormControl fullWidth>
             <InputLabel id="category-select-label">Select Category</InputLabel>
             <Select
-            sx={{width:"200px"}}
+              sx={{ width: "200px" }}
               labelId="category-select-label"
               value={selectedCategory}
               label="Select Category"
-              onChange={(e) => setSelectedCategory(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value;
+                setCategoryLoading(true);
+                setSelectedCategory(value);
+                setTimeout(() => setCategoryLoading(false), 400); //  إظهار اللودينق مؤقتاً
+              }}
             >
               {categories.map((category) => (
                 <MenuItem key={category} value={category}>
@@ -109,64 +123,70 @@ const Home = () => {
         </Grid>
       </Grid>
 
-      {/* المنتجات حسب الفلترة */}
-      <Grid container spacing={2}>
-        {filteredProducts.map((product) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
-            <Card
-              sx={{
-                height: "100%",
-                width: "250px",
-                display: "flex",
-                flexDirection: "column",
-                borderRadius: 3,
-                boxShadow: 4,
-              }}
-            >
-              <CardMedia
-                component="img"
-                image={product.image}
-                alt={product.name}
-                height="180"
-                sx={{ objectFit: "cover" }}
-              />
-              <CardContent sx={{ flexGrow: 1 }}>
-                <Typography variant="h6">
-                  {highlightMatch(product.name, searchQuery)}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  sx={{ mb: 1 }}
-                >
-                  {product.description}
-                </Typography>
-                <Typography variant="body1" fontWeight="bold">
-                  ${product.price}
-                </Typography>
-                <Box mt={1}>
-                  <Chip
-                    label={product.isAvailable ? "Available" : "Out of stock"}
-                    color={product.isAvailable ? "success" : "default"}
-                    size="small"
-                  />
-                </Box>
-              </CardContent>
-              <CardActions sx={{ p: 2 }}>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  fullWidth
-                  disabled={!product.isAvailable}
-                  onClick={() => handleAddToCart(product)}
-                >
-                  Buy
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+      {/*  لودينق داخلي أثناء تغيير التصنيف فقط */}
+      {categoryLoading ? (
+        <Box display="flex" justifyContent="center" mt={10}>
+          <CircularProgress color="secondary" />
+        </Box>
+      ) : (
+        <Grid container spacing={2}>
+          {filteredProducts.map((product) => (
+            <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
+              <Card
+                sx={{
+                  height: "100%",
+                  width: "250px",
+                  display: "flex",
+                  flexDirection: "column",
+                  borderRadius: 3,
+                  boxShadow: 4,
+                }}
+              >
+                <CardMedia
+                  component="img"
+                  image={product.image}
+                  alt={product.name}
+                  height="180"
+                  sx={{ objectFit: "cover" }}
+                />
+                <CardContent sx={{ flexGrow: 1 }}>
+                  <Typography variant="h6">
+                    {highlightMatch(product.name, searchQuery)}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ mb: 1 }}
+                  >
+                    {product.description}
+                  </Typography>
+                  <Typography variant="body1" fontWeight="bold">
+                    ${product.price}
+                  </Typography>
+                  <Box mt={1}>
+                    <Chip
+                      label={product.isAvailable ? "Available" : "Out of stock"}
+                      color={product.isAvailable ? "success" : "default"}
+                      size="small"
+                    />
+                  </Box>
+                </CardContent>
+                <CardActions sx={{ p: 2 }}>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    fullWidth
+                    disabled={!product.isAvailable}
+                    onClick={() => handleAddToCart(product)}
+                  >
+                    Buy
+                  </Button>
+                </CardActions>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      )}
     </Box>
   );
 };

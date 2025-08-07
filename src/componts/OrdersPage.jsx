@@ -61,7 +61,7 @@ const OrdersPage = () => {
               backgroundColor: "#f9f9f9",
             }}
           >
-            {/* ✅ البريد الإلكتروني */}
+            {/*  البريد الإلكتروني */}
             <Typography variant="subtitle1" color="primary" mb={1}>
               البريد الإلكتروني: {order.email || "غير متوفر"}
             </Typography>

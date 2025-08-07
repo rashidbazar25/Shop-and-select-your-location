@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
 
-const ADMIN_EMAIL = "admin@gmail.com"; // ✅ غيّره لإيميل الأدمن الحقيقي
+const ADMIN_EMAIL = "admin@gmail.com"; //   ايميل  الأدمن 
 
 const ProtectedAdminRoute = ({ children }) => {
+
   const navigate = useNavigate();
   const [isAllowed, setIsAllowed] = useState(false);
   const [isChecking, setIsChecking] = useState(true);
@@ -31,6 +32,9 @@ const ProtectedAdminRoute = ({ children }) => {
 
     return () => unsubscribe();
   }, [navigate]);
+
+
+  
 
   if (isChecking) {
     return <p style={{ textAlign: "center" }}>جاري التحقق...</p>;

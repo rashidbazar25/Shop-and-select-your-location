@@ -22,7 +22,10 @@ import { useEffect, useState } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 
+
+
 const Navbar = () => {
+
   const cart = useSelector((state) => state.cart.items);
   const [user, setUser] = useState(null);
   const [isAuthChecked, setIsAuthChecked] = useState(false);
@@ -42,10 +45,14 @@ const Navbar = () => {
     return () => unSubscribe();
   }, [auth]);
 
+
+
   const handleLogout = async () => {
     await signOut(auth);
     navigate('/login');
   };
+
+
 
   const navLinks = (
     <>
@@ -55,6 +62,8 @@ const Navbar = () => {
       <Button color="inherit" component={RouterLink} to="/dashboard">Dashboard</Button>
     </>
   );
+
+
 
   const authLinks = !isAuthChecked ? null : user ? (
     <>
@@ -69,6 +78,8 @@ const Navbar = () => {
       <Button color="inherit" component={RouterLink} to="/login">Login</Button>
     </>
   );
+
+  
 
   return (
     <>
