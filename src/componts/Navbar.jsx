@@ -83,7 +83,7 @@ const Navbar = () => {
       >
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Typography variant="h6" component="div">
-            MyApp
+            ToDeliver
           </Typography>
 
           {isMobile ? (

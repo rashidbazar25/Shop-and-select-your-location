@@ -12,6 +12,7 @@ import Register from './componts/Register '
 import Login from './componts/Login'
 import ProtectedAdminRoute from './componts/ProtectedAdminRoute'
 import { ToastContainer } from 'react-toastify';
+import Footer from './componts/Footer'
 
 function App() {
 
@@ -38,10 +39,9 @@ function App() {
     </ProtectedAdminRoute>
   }
 />
-      
-
     </Routes>
     </Container>
+    <Footer/>
     </>
   )
 }
