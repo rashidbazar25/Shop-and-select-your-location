@@ -79,8 +79,9 @@ const Navbar = () => {
           width: "100%",
           boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
           backgroundColor: "#f9f6f2",
+          position:"fixed"
         }}
-        position="static"
+       
       >
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Typography variant="h6" component="div">

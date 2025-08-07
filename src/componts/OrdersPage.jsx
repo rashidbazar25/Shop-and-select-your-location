@@ -32,7 +32,7 @@ const OrdersPage = () => {
 
     try {
       await deleteDoc(doc(db, "orders", orderId));
-      alert("لحضات ليصلك طلبك  ✅");
+      alert("لحظات ليصلك طلبك ✅");
     } catch (error) {
       console.error("خطأ أثناء حذف الطلب:", error);
       alert("❌ فشل في حذف الطلب");
@@ -42,7 +42,7 @@ const OrdersPage = () => {
   return (
     <Box p={{ xs: 2, md: 4 }} mt={10}>
       <Typography variant="h4" gutterBottom textAlign="center">
-        الطلبات الواردة 
+        الطلبات الواردة
       </Typography>
 
       {orders.length === 0 ? (
@@ -61,7 +61,10 @@ const OrdersPage = () => {
               backgroundColor: "#f9f9f9",
             }}
           >
-           
+            {/* ✅ البريد الإلكتروني */}
+            <Typography variant="subtitle1" color="primary" mb={1}>
+              البريد الإلكتروني: {order.email || "غير متوفر"}
+            </Typography>
 
             <Divider sx={{ my: 2 }} />
 
@@ -127,7 +130,7 @@ const OrdersPage = () => {
                 variant="outlined"
                 onClick={() => handleDelete(order.id)}
               >
-                تم اعطاء الطلب للموصل 
+                تم اعطاء الطلب للموصل
               </Button>
             </Box>
           </Paper>
