@@ -11,13 +11,16 @@ import OrdersPage from './componts/OrdersPage'
 import Register from './componts/Register '
 import Login from './componts/Login'
 import ProtectedAdminRoute from './componts/ProtectedAdminRoute'
+import { ToastContainer } from 'react-toastify';
 
 function App() {
+
 
   return (
     <>
      <Container maxWidth="lg">
       <Navbar/>
+      <ToastContainer position="top-center" autoClose={2000} />
     <Routes>
       
       <Route path='/' element = {<Home/>} />

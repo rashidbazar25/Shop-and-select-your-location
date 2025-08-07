@@ -19,7 +19,10 @@ import {
 const Producta = () => {
   const dispatch = useDispatch();
   const { items: products, loading } = useSelector((state) => state.products);
-  const [localLoading, setLocalLoading] = useState(true); // حالة لانتظار 4 ثواني
+  const [localLoading, setLocalLoading] = useState(true); // حالة لانتظار 2 ثواني
+
+
+  
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -31,9 +34,15 @@ const Producta = () => {
     return () => clearTimeout(timer); // تنظيف المؤقت
   }, [dispatch]);
 
+
+
+
   const handleAddToCart = (product) => {
     dispatch(addToCart(product));
   };
+
+
+
 
   if (loading || localLoading) {
     return (
@@ -42,6 +51,10 @@ const Producta = () => {
       </Box>
     );
   }
+
+
+
+
 
   return (
     <Box p={4} mt={10}>

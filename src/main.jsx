@@ -7,6 +7,7 @@ import { Provider } from 'react-redux'
 import { store } from './store/store.js'
 import '@coreui/coreui/dist/css/coreui.min.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import 'react-toastify/dist/ReactToastify.css';
 
 
 createRoot(document.getElementById('root')).render(

@@ -13,13 +13,14 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  
   const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       alert("✅ تم تسجيل الدخول");
-      navigate("/dashboard"); // عدّل حسب وجهتك
+      navigate("/dashboard"); 
     } catch (error) {
       alert("❌ خطأ: " + error.message);
     }
